@@ -1,5 +1,13 @@
 <!DOCTYPE html>
 <html>
+    <script src="//cdn.tinymce.com/4/tinymce.min.js" async></script>
+    <script async>
+      tinymce.init({ 
+        selector:'textarea',
+        toolbar: "sizeselect | bold italic | fontselect |  fontsizeselect"
+      });
+    </script>
+
   <head>
     <title>Lawyerify—Replace all words with longers synonyms </title>
     <meta name="description" content="Replace each word in text with its longest character synonym"/>
