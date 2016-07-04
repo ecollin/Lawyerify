@@ -7,7 +7,7 @@
         selector:"textarea",
         height: 350,
         toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | print preview media fullpage | forecolor backcolor emoticons | sizeselect | fontselect | fontsizeselect ",
-        //the following executes the indent command when tab is pressed and prevents default. 
+        //the following adds two em spaces when tab is pressed and prevents default (effectively indents).
         setup: function(ed) {
           ed.on('keydown', function(event) {
             if (event.keyCode == 9) { // tab pressed
