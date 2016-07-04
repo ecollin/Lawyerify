@@ -43,4 +43,16 @@
   </body>
 </html>
 
+<script>
+var button = document.querySelector("#lawyerify");
+button.addEventListener("click", function(event) {
+  var html = tinyMCE.get('area').getContent();
+  alert(typeof html);
+  var doc = new DOMParser().parseFromString(html, "text/html");
+  alert(typeof doc);
+  alert(doc);
+  //tinyMCE.get('area').setContent(html.toString());
+});
+</script>
+
 
