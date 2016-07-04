@@ -8,15 +8,14 @@
         height: 350,
         toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | print preview media fullpage | forecolor backcolor emoticons | sizeselect | bold italic | fontselect | fontsizeselect "
         //the following executes the indent command when tab is pressed and prevents default. 
-        //setup: function(ed) {
-          //ed.on('keydown', function(event) {
-            //if (event.keyCode == 9) { // tab pressed
-              //ed.execCommand('Indent');
-            //}
-            //event.preventDefault();
-            //return false;
-          //}
-        //});
+        setup: function(ed) {
+          ed.on('keydown', function(event) {
+            if (event.keyCode == 9) { // tab pressed
+              ed.execCommand('mceInsertContent', false, '&emsp;&emsp;');
+              event.preventDefault();
+            }
+          });
+        }
       });
     </script>
     <!-- HTML5shiv below. Probably totally unnecessary because like 10 people will ever see this site.-->
