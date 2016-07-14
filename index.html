@@ -52,8 +52,10 @@ button.addEventListener("click", function(event) {
   alert("doc: " + doc)
   alert("doc.textContent: " + doc.textContent);
   alert("doc.body" + doc.body);
-  alert("doc.body.innerHTML" + doc.body.innerHTML);
-  
+  //at this point you have the string of the HTML as the html var 
+  //and the parse html is like a document in the doc var. 
+  //doc.body is undefined. 
+
   //document.body will give the html for some reason. document.body.
   //tinyMCE.get('area').setContent(html.toString());
 });
