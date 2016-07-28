@@ -76,11 +76,11 @@ button.addEventListener("click", function(event) {
     synonyms += "|"; //add | to the end so each synonyms is surrounded by two ||.
     var regex = /\|[^|]+\|/gi;
     var match;
-    //while ( ( match = regex.exec(synonyms) ) != null ) {
-        //placeholder
-    //}
-    if (synonyms) 
-      alert(synonyms);
+    while ( ( match = regex.exec(synonyms) ) != null ) {
+        alert(match);
+    }
+    //if (synonyms) 
+      //alert(synonyms);
   }
 //don't forget to compare to word itself
 
