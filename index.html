@@ -64,9 +64,8 @@ button.addEventListener("click", function(event) {
 });
 //Note: because this is being called by the API (JSONP format), it needs to be global function.
   function process(result) { 
-    alert('at least im here');
     var longest; //maybe initially set this to the word itself
-    var synonyms; 
+    var synonyms = ""; 
     for (key in result.response) { 
     //result.response is an array of objects. Each object has a list property. Each list has a synonyms property.
     //list.synonyms returns a list of synonyms. View here: 
@@ -77,9 +76,9 @@ button.addEventListener("click", function(event) {
     synonyms += "|"; //add | to the end so each synonyms is surrounded by two ||.
     var regex = /\|[^|]+\|/gi;
     var match;
-    while ( ( match = regex.exec(synonyms) ) != null ) {
+    //while ( ( match = regex.exec(synonyms) ) != null ) {
         //placeholder
-    }
+    //}
     if (synonyms) 
       alert(synonyms);
   }
