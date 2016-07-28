@@ -61,7 +61,9 @@ button.addEventListener("click", function(event) {
      // + word + "&language=en_US&output=json&key=n2Q8Q6zjo5Y8c94Vt7hJ" 
        //+ "&callback=process";
     document.head.appendChild(s);
-    function process(result) { 
+  }
+});
+function process(result) { 
       output = ""; 
       for (key in result.response) { 
         list = result.response[key].list; 
@@ -70,10 +72,6 @@ button.addEventListener("click", function(event) {
       if (output) 
         alert(output);
     }
-      
-  }
-});
-    
 
 
 </script>
