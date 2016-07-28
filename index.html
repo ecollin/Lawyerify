@@ -52,7 +52,7 @@ button.addEventListener("click", function(event) {
   var newText = text;
   var wordRegex = /\b[a-z]+'?[a-z]*\b/gi; 
   var match;
-  while ( (match = wordRegex.exec(text)) != null ) {
+  while ( ( var match = wordRegex.exec(text)) != null ) {
     var word = match[0];
     if (word.includes("\'")) continue;
     var s = document.createElement("script"); 
@@ -62,16 +62,22 @@ button.addEventListener("click", function(event) {
     document.head.appendChild(s);
   }
 });
-//Note to self: because this is being called by the API (JSONP format), it needs to be global function.
+//Note: because this is being called by the API (JSONP format), it needs to be global function.
   function process(result) { 
-    var longest = ; 
+    var longest; //maybe initially set this to the word itself
+    var synonyms; 
     for (key in result.response) { 
     //result.response is an array of objects. Each object has a list property. Each list has a synonyms property.
     //list.synonyms returns a list of synonyms. View here: 
     //http://thesaurus.altervista.org/service.php?word=peace&language=en_US&output=json&key=test_only&callback=process
       list = result.response[key].list; 
       synonyms += "|" + list.synonyms; 
-    } 
+    }
+    synonyms += "|"; //add | to the end so each synonyms is surrounded by two ||.
+    var regex = /\|[^|]+\|/gi;
+    while ( (var match = regex.exec(synonyms) ) != null ) {
+        //placeholder
+    }
     if (synonyms) 
       alert(synonyms);
   }
