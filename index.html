@@ -75,7 +75,7 @@ button.addEventListener("click", function(event) {
     }
     synonyms += "|"; //add | to the end so each synonyms is surrounded by two ||.
     var regex = /\|[^|]+\|/gi;
-    //this pattern skips the first in each array and then every other.
+    //this pattern skips every other word
     var match;
     alert(synonyms);
     while ( ( match = regex.exec(synonyms) ) != null ) {
