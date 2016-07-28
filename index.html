@@ -63,6 +63,7 @@ button.addEventListener("click", function(event) {
     document.head.appendChild(s);
   }
 });
+//Note to self: because this is being called by the API (JSONP format), it needs to be global function.
 function process(result) { 
       output = ""; 
       for (key in result.response) { 
