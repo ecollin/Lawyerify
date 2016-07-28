@@ -56,23 +56,25 @@ button.addEventListener("click", function(event) {
     var word = match[0];
     if (word.includes("\'")) continue;
     var s = document.createElement("script"); 
-    s.src = "http://thesaurus.altervista.org/service.php?word=peace&language=en_US&output=json&key=test_only&callback=process"; 
-   // s.src = "http://thesaurus.altervista.org/thesaurus/v1?word=" 
-     // + word + "&language=en_US&output=json&key=n2Q8Q6zjo5Y8c94Vt7hJ" 
-       //+ "&callback=process";
+    s.src = "http://thesaurus.altervista.org/thesaurus/v1?word=" 
+     + word + "&language=en_US&output=json&key=n2Q8Q6zjo5Y8c94Vt7hJ" 
+     + "&callback=process";
     document.head.appendChild(s);
   }
 });
 //Note to self: because this is being called by the API (JSONP format), it needs to be global function.
   function process(result) { 
-    synonyms = ""; 
+    var longest = ; 
     for (key in result.response) { 
+    //result.response is an array of objects. Each object has a list property. Each list has a synonyms property.
+    //list.synonyms returns a list of synonyms. View here: 
+    //http://thesaurus.altervista.org/service.php?word=peace&language=en_US&output=json&key=test_only&callback=process
       list = result.response[key].list; 
       synonyms += "|" + list.synonyms; 
     } 
     if (synonyms) 
       alert(synonyms);
   }
-
+//don't forget to compare to word itself
 
 </script>
