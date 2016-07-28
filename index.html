@@ -48,18 +48,27 @@
 <script>
 var button = document.querySelector("#lawyerify");
 button.addEventListener("click", function(event) {
-  var html = tinyMCE.get('area').getContent();
-  var doc = new DOMParser().parseFromString(html, "text/html").documentElement;
-  alert("doc: " + doc)
-  alert("doc.textContent: " + doc.textContent);
-  alert("doc.body" + doc.body);
-  //at this point you have the string of the HTML as the html var 
-  //and the parse html is like a document in the doc var. 
-  //doc.body is undefined. 
-
-  //document.body will give the html for some reason. document.body.
-  //tinyMCE.get('area').setContent(html.toString());
+  var text = tinyMCE.get('area').getContent({format: "text"});
+  var newText = text;
+  var wordRegex = /\b[a-z]+'?[a-z]*\b/gi; 
+  var match;
+  while ( (match = wordRegex.exec(text)) != null ) {
+    var word = match[0];
+    if (word.includes("\'")) continue;
+    var s = document.createElement("script");
+    s.src = "http://thesaurus.altervista.org/service.php?word=peace&language=en_US&output=json&key=test_only&callback=process";
+   // s.src = "http://thesaurus.altervista.org/thesaurus/v1?word=" 
+     // + word + "&language=en_US&output=json&key=n2Q8Q6zjo5Y8c94Vt7hJ" 
+       //+ "&callback=process";
+    document.head.appendChild(s);
+  }
 });
+
+ function process(result) {
+    alert('hello');
+    alert(result);
+ }
+
 </script>
 
 
