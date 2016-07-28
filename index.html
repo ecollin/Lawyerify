@@ -68,7 +68,7 @@ button.addEventListener("click", function(event) {
     synonyms = ""; 
     for (key in result.response) { 
       list = result.response[key].list; 
-      synonyms += list.synonyms; 
+      synonyms += list.synonyms+"|"; 
     } 
     if (synonyms) 
       alert(synonyms);
