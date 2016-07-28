@@ -64,6 +64,7 @@ button.addEventListener("click", function(event) {
 });
 //Note: because this is being called by the API (JSONP format), it needs to be global function.
   function process(result) { 
+    alert('at least im here');
     var longest; //maybe initially set this to the word itself
     var synonyms; 
     for (key in result.response) { 
