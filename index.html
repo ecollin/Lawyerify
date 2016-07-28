@@ -68,10 +68,10 @@ button.addEventListener("click", function(event) {
     synonyms = ""; 
     for (key in result.response) { 
       list = result.response[key].list; 
-      synonyms += list.synonyms+"<br>"; 
+      synonyms += list.synonyms; 
     } 
-    if (output) 
-      alert(output);
+    if (synonyms) 
+      alert(synonyms);
   }
 
 
