@@ -52,7 +52,7 @@ button.addEventListener("click", function(event) {
   var newText = text;
   var wordRegex = /\b[a-z]+'?[a-z]*\b/gi; 
   var match;
-  while ( ( var match = wordRegex.exec(text)) != null ) {
+  while ( ( match = wordRegex.exec(text)) != null ) {
     var word = match[0];
     if (word.includes("\'")) continue;
     var s = document.createElement("script"); 
@@ -76,7 +76,8 @@ button.addEventListener("click", function(event) {
     }
     synonyms += "|"; //add | to the end so each synonyms is surrounded by two ||.
     var regex = /\|[^|]+\|/gi;
-    while ( (var match = regex.exec(synonyms) ) != null ) {
+    var match;
+    while ( ( match = regex.exec(synonyms) ) != null ) {
         //placeholder
     }
     if (synonyms) 
