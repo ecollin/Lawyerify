@@ -64,15 +64,15 @@ button.addEventListener("click", function(event) {
   }
 });
 //Note to self: because this is being called by the API (JSONP format), it needs to be global function.
-function process(result) { 
-      output = ""; 
-      for (key in result.response) { 
-        list = result.response[key].list; 
-        output += list.synonyms+"<br>"; 
-      } 
-      if (output) 
-        alert(output);
-    }
+  function process(result) { 
+    synonyms = ""; 
+    for (key in result.response) { 
+      list = result.response[key].list; 
+      synonyms += list.synonyms; 
+    } 
+    if (output) 
+      alert(output);
+  }
 
 
 </script>
