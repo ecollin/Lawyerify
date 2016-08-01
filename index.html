@@ -56,9 +56,11 @@ button.addEventListener("click", function(event) {
   while ( ( match = wordRegex.exec(text)) != null ) {
     var word = match[0];
     if (word.includes("\'")) continue;
-    var s = document.createElement("script"); 
-    s.src = "https://words.bighugelabs.com/api/2/d114c68208c8b398bc59a8963d564320/" + word + "/json?callback=process";
-    document.head.appendChild(s);
+    var url = "https://words.bighugelabs.com/api/2/d114c68208c8b398bc59a8963d564320/" + word + "/json";
+    var req = new XMLHttpRequest();
+    req.open("GET",url,false);
+    req.send();
+    alert(req.responseText);
   }
 });
 //Note: because this is being called by the API (JSONP format), it needs to be global function.
@@ -87,9 +89,10 @@ button.addEventListener("click", function(event) {
    var synonyms = result[pos]["syn"]; //this is an array of synonyms.
    var longest = "";
    synonyms.forEach(function(syn) {
-    if (syn.length > longest.length) longest = syn;   
+     if (syn.length > longest.length) longest = syn;   
    });
    
+   //write it to the file and replace
    
   }
 //don't forget to compare to word itself
