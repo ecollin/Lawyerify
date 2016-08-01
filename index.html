@@ -52,6 +52,7 @@ button.addEventListener("click", function(event) {
   var newText = text;
   var wordRegex = /\b[a-z]+'?[a-z]*\b/gi; 
   var match;
+  alert('here at least please');
   while ( ( match = wordRegex.exec(text)) != null ) {
     var word = match[0];
     if (word.includes("\'")) continue;
