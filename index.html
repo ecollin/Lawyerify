@@ -58,6 +58,7 @@ button.addEventListener("click", function(event) {
     var s = document.createElement("script"); 
     s.src = "https://words.bighugelabs.com/api/2/d114c68208c8b398bc59a8963d564320/" + word + "/json?callback=process";
     document.head.appendChild(s);
+    alert('here');
   }
 });
 //Note: because this is being called by the API (JSONP format), it needs to be global function.
