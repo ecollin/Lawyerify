@@ -63,30 +63,33 @@ button.addEventListener("click", function(event) {
 });
 //Note: because this is being called by the API (JSONP format), it needs to be global function.
   function process(result) {
-    alert(result);  
-      
-  }
-
-  function oldProcess(result) { 
-    var longest; //maybe initially set this to the word itself
-    var synonyms = ""; 
-    for (key in result.response) { 
-    //result.response is an array of objects. Each object has a list property. Each list has a synonyms property.
-    //list.synonyms returns a list of synonyms. View here: 
-    //http://thesaurus.altervista.org/service.php?word=peace&language=en_US&output=json&key=test_only&callback=process
-      list = result.response[key].list; 
-      synonyms += "|" + list.synonyms; 
-    }
-    synonyms += "|"; //add | to the end so each synonyms is surrounded by two ||.
-    var regex = /\|[^|]+\|/gi;
-    //this pattern skips every other word
-    var match;
-    alert(synonyms);
-    while ( ( match = regex.exec(synonyms) ) != null ) {
-        //alert(match);
-    }
-    //if (synonyms) 
-      //alert(synonyms);
+   var count = 0; //# of parts of speech possible for the word
+   var pos;  //Part of speech
+   for ( var prop in result) {
+       if (prop == "noun") {
+        pos = "noun";
+        count++;
+       }
+       if (prop == "verb") {
+        pos = "verb";
+        count++;
+       }
+       if (prop == "adjective") {
+        pos = "adjective";
+        count++;
+       }
+       if (prop == "adverb") {
+        pos = "adverb";
+        count++;
+       }
+   }
+   if (count > 1) return; //don't do anything w/ more than one possible PoS
+   var synonyms = result[pos]["syn"]; //this is an array of synonyms.
+   var longest = "";
+   synonyms.forEach(function(syn) {
+    if (syn.length > longest.length) longest = syn;   
+   });
+   alert(longest);
   }
 //don't forget to compare to word itself
 </script>
