@@ -78,6 +78,7 @@ button.addEventListener("click", function(event) {
 });
 //Note: because this is being called by the API (JSONP format), it needs to be global function.
   function process(result, word) {
+      alert('process called');
     var count = 0; //# of parts of speech possible for the word
     var pos;  //Part of speech
     for ( var prop in result) {
@@ -99,6 +100,7 @@ button.addEventListener("click", function(event) {
        }
    }
    if (count > 1) return; //don't do anything w/ more than one possible PoS
+   alert('count <= 1');
    var synonyms = result[pos]["syn"]; //this is an array of synonyms.
    var longest = word;
    synonyms.forEach(function(syn) {
