@@ -94,13 +94,13 @@ button.addEventListener("click", function(event) {
        }
    }
    if (count > 1) return; //don't do anything w/ more than one possible PoS
-   var synonyms = result[pos]["syn"]; //this is an array of synonyms.
-   var longest = word;
-   synonyms.forEach(function(syn) {
-     if (syn.length > longest.length) longest = syn;   
-   });
-   var replaced = new RegExp(word, "g");
-   newText.replace(replaced, longest);  
+   //var synonyms = result[pos]["syn"]; //this is an array of synonyms.
+   //var longest = word;
+   //synonyms.forEach(function(syn) {
+    // if (syn.length > longest.length) longest = syn;   
+   //});
+   //var replaced = new RegExp(word, "g");
+   //newText.replace(replaced, longest);  
    //write it to the file and replace
   }
 </script>
