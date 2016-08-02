@@ -73,6 +73,7 @@ button.addEventListener("click", function(event) {
 });
 //Note: because this is being called by the API (JSONP format), it needs to be global function.
   function process(result, word) {
+      alert(word);
     var count = 0; //# of parts of speech possible for the word
     var pos;  //Part of speech
     for ( var prop in result) {
