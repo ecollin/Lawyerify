@@ -62,7 +62,6 @@ button.addEventListener("click", function(event) {
     var req = new XMLHttpRequest();
     req.open("GET",url, true);
     req.addEventListener("load", function(event) {
-    alert('reached listener');
       if (req.status == 200)
         process(req.responseText, word);
       else if (req.status == 404) return; //word not found, simply ignore it.
@@ -70,6 +69,8 @@ button.addEventListener("click", function(event) {
     });
     req.send();
   }
+  tinyMCE.get("area").setContent(data);
+
 });
 //Note: because this is being called by the API (JSONP format), it needs to be global function.
   function process(result, word) {
