@@ -62,8 +62,10 @@ button.addEventListener("click", function(event) {
     var req = new XMLHttpRequest();
     req.open("GET",url, true);
     req.addEventListener("load", function(event) {
-      if (req.status == 200) 
+      if (req.status == 200) { 
+          alert('calling process');
         process(req.responseText, word);
+      }
       else if (req.status == 404) return; //word not found, simply ignore it.
       else if (req.status == 500) throw new Error("Number of synonym requests per day reached. No more words can be lawyerified.");
     });
@@ -79,7 +81,6 @@ button.addEventListener("click", function(event) {
     var count = 0; //# of parts of speech possible for the word
     var pos;  //Part of speech
     for ( var prop in result) {
-
       if (prop == "noun") {
           alert(pos + " = noun");
       pos = "noun";
