@@ -47,10 +47,12 @@
 </html>
 
 <script>
+var text = "";
+var newText = "";
 var button = document.querySelector("#lawyerify");
 button.addEventListener("click", function(event) {
-  var text = tinyMCE.get('area').getContent({format: "text"});
-  var newText = text;
+  text = tinyMCE.get("area").getContent({format: "text"});
+  newText = text;
   var wordRegex = /\b[a-z]+'?[a-z]*\b/gi; 
   var match;
   while ( ( match = wordRegex.exec(text)) != null ) {
@@ -58,13 +60,18 @@ button.addEventListener("click", function(event) {
     if (word.includes("\'")) continue;
     var url = "https://words.bighugelabs.com/api/2/d114c68208c8b398bc59a8963d564320/" + word + "/json";
     var req = new XMLHttpRequest();
-    req.open("GET",url,false);
+    req.open("GET",url, true);
+    req.addEventListener("load", function(event) {
+      if (req.status == 200)
+        process(req.responseText, word);
+      else if (req.status == 404) return; //word not found, simply ignore it.
+      else if (req.status == 500) throw new Error("Number of synonym requests per day reached. No more words can be lawyerified.");
+    });
     req.send();
-    alert(req.responseText);
   }
 });
 //Note: because this is being called by the API (JSONP format), it needs to be global function.
-  function process(result) {
+  function process(result, word) {
     var count = 0; //# of parts of speech possible for the word
     var pos;  //Part of speech
     for ( var prop in result) {
@@ -87,11 +94,12 @@ button.addEventListener("click", function(event) {
    }
    if (count > 1) return; //don't do anything w/ more than one possible PoS
    var synonyms = result[pos]["syn"]; //this is an array of synonyms.
-   var longest = "";
+   var longest = word;
    synonyms.forEach(function(syn) {
      if (syn.length > longest.length) longest = syn;   
    });
-   
+   var replaced = new RegExp(word, "g");
+   newText.replace(replaced, longest);  
    //write it to the file and replace
    
   }
