@@ -69,6 +69,7 @@ button.addEventListener("click", function(event) {
     req.send();
   }
   tinyMCE.get("area").setContent(newText, {format:"text"});
+  //make process call this when last word processed
 });
 //Note: because this is being called by the API (JSONP format), it needs to be global function.
   function process(result, word) {
