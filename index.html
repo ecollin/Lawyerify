@@ -79,7 +79,9 @@ button.addEventListener("click", function(event) {
     var count = 0; //# of parts of speech possible for the word
     var pos;  //Part of speech
     for ( var prop in result) {
+      alert(prop);
       if (prop == "noun") {
+          alert(pos + " = noun");
       pos = "noun";
       count++;
     }
