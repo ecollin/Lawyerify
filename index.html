@@ -101,12 +101,15 @@ button.addEventListener("click", function(event) {
    }
    if (count > 1) return; //don't do anything w/ more than one possible PoS
    alert('count <= 1');
+   alert(result[pos]);
+   alert(result[pos]["syn"]);
    var synonyms = result[pos]["syn"]; //this is an array of synonyms.
+   alert('passed error point');
    var longest = word;
    synonyms.forEach(function(syn) {
      if (syn.length > longest.length) longest = syn;   
    });
-   alert('longest');
+   alert(longest);
    var replaced = new RegExp(word, "g");
    newText.replace(replaced, longest);
    alert("Replaced: " + replaced + "longest: " + longest + " newText: " + newText);
