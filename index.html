@@ -47,7 +47,6 @@
 </html>
 
 <script>
-alert('running');
 var text = "";
 var newText = "";
 var button = document.querySelector("#lawyerify");
@@ -63,7 +62,6 @@ button.addEventListener("click", function(event) {
     var req = new XMLHttpRequest();
     req.open("GET",url, true);
     req.addEventListener("load", function(event) {
-        alert('load');
       if (req.status == 200)
         process(req.responseText, word);
       else if (req.status == 404) return; //word not found, simply ignore it.
@@ -71,12 +69,10 @@ button.addEventListener("click", function(event) {
     });
     req.send();
   }
-  alert(done);
   tinyMCE.get("area").setContent(newText, {format:"text"});
 });
 //Note: because this is being called by the API (JSONP format), it needs to be global function.
   function process(result, word) {
-      alert('process');
     var count = 0; //# of parts of speech possible for the word
     var pos;  //Part of speech
     for ( var prop in result) {
@@ -98,7 +94,6 @@ button.addEventListener("click", function(event) {
        }
    }
    if (count > 1) return; //don't do anything w/ more than one possible PoS
-   alert("PoS: " + pos);
    var synonyms = result[pos]["syn"]; //this is an array of synonyms.
    var longest = word;
    synonyms.forEach(function(syn) {
@@ -107,6 +102,5 @@ button.addEventListener("click", function(event) {
    var replaced = new RegExp(word, "g");
    newText.replace(replaced, longest);  
    //write it to the file and replace
-   
   }
 </script>
