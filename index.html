@@ -95,9 +95,17 @@ button.addEventListener("click", function(event) {
    synonyms.forEach(function(syn) {
      if (syn.length > longest.length) longest = syn;   
    });
-   var replaced = new RegExp(word.charAt(0).toUpperCase() + word.slice(1), "g");
-   newText = text.replace(replaced, longest.charAt(0).toUpperCase() + word.slice(1));
-   replaced = new RegExp(word.charAt(0).toLowerCase() + word.slice(1), "g");
-   newText = text.replace(replaced, longest.charAt(0).toLowerCase() + word.slice(1));
+   var upper = capitalize(word);
+   var lower = decapitalize(word);
+   var replaced = new RegExp(upper, "g");
+   newText = text.replace(replaced, capitalize(longest));
+   replaced = new RegExp(lower, "g");
+   newText = text.replace(replaced, decapitalize(longest));
+   function capitalize(word) {
+       return word.charAt(0).toUpperCase() + word.slice(1);
+   }
+   function decapitalize(word) {
+       return word.charAt(0).toLowerCase() + word.slice(1);
+   }
   }
 </script>
