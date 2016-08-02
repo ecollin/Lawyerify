@@ -76,18 +76,15 @@ button.addEventListener("click", function(event) {
     var pos;  //Part of speech
     for ( var prop in result) {
       if (prop == "noun") {
-      pos = "noun";
-      count++;
-    }
-      if (prop == "verb") {
+        pos = "noun";
+        count++;
+      } else if (prop == "verb") {
         pos = "verb";
         count++;
-      }
-      if (prop == "adjective") {
+      } else if (prop == "adjective") {
         pos = "adjective";
         count++;
-       }
-       if (prop == "adverb") {
+       } else if (prop == "adverb") {
         pos = "adverb";
         count++;
        }
@@ -101,5 +98,6 @@ button.addEventListener("click", function(event) {
    var replaced = new RegExp(word, "g");
    newText.replace(replaced, longest);  
    //write it to the file and replace
+   alert(newText);
   }
 </script>
