@@ -56,12 +56,14 @@ button.addEventListener("click", function(event) {
   var wordRegex = /\b[a-z]+'?[a-z]*\b/gi; 
   var match;
   while ( ( match = wordRegex.exec(text)) != null ) {
+      alert('match');
     var word = match[0];
     if (word.includes("\'")) continue;
     var url = "https://words.bighugelabs.com/api/2/d114c68208c8b398bc59a8963d564320/" + word + "/json";
     var req = new XMLHttpRequest();
     req.open("GET",url, true);
     req.addEventListener("load", function(event) {
+        alert('loading');
       if (req.status == 200) { 
           alert('calling process');
         process(req.responseText, word);
