@@ -62,11 +62,8 @@ button.addEventListener("click", function(event) {
     var req = new XMLHttpRequest();
     req.open("GET",url, true);
     req.addEventListener("load", function(event) {
-        alert('loaded');
-      if (req.status == 200) {
-          alert('calling');
+      if (req.status == 200) 
         process(req.responseText, word);
-      }
       else if (req.status == 404) return; //word not found, simply ignore it.
       else if (req.status == 500) throw new Error("Number of synonym requests per day reached. No more words can be lawyerified.");
     });
@@ -102,15 +99,12 @@ button.addEventListener("click", function(event) {
    if (count > 1) return; //don't do anything w/ more than one possible PoS
    alert('count <= 1');
    alert(result);
-   alert(result[pos]);
-   alert(result[pos]["syn"]);
+   alert(pos);
    var synonyms = result[pos]["syn"]; //this is an array of synonyms.
-   alert('passed error point');
    var longest = word;
    synonyms.forEach(function(syn) {
      if (syn.length > longest.length) longest = syn;   
    });
-   alert(longest);
    var replaced = new RegExp(word, "g");
    newText.replace(replaced, longest);
    alert("Replaced: " + replaced + "longest: " + longest + " newText: " + newText);
