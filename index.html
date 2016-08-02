@@ -70,7 +70,7 @@ button.addEventListener("click", function(event) {
     req.send();
   }
   alert('done');
-  tinyMCE.get("area").setContent(newText);
+  tinyMCE.get("area").setContent(newText, {format:"text"});
 
 });
 //Note: because this is being called by the API (JSONP format), it needs to be global function.
