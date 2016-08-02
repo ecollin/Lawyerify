@@ -104,6 +104,7 @@ button.addEventListener("click", function(event) {
    synonyms.forEach(function(syn) {
      if (syn.length > longest.length) longest = syn;   
    });
+   alert('longest');
    var replaced = new RegExp(word, "g");
    newText.replace(replaced, longest);
    alert("Replaced: " + replaced + "longest: " + longest + " newText: " + newText);
