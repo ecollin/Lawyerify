@@ -47,10 +47,12 @@
 </html>
 
 <script>
+alert('script');
 var text = "";
 var newText = "";
 var button = document.querySelector("#lawyerify");
 button.addEventListener("click", function(event) {
+    alert('button');
   text = tinyMCE.get("area").getContent({format: "text"});
   newText = text;
   var wordRegex = /\b[a-z]+'?[a-z]*\b/gi; 
