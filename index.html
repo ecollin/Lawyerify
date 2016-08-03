@@ -46,12 +46,12 @@
 </html>
 
 <script>
+var setWords = {}; //common words the algorithm below shouldn't replace because it does a bad job.
+setWords["he"] = "he"; setWords["He"] = "He"; setWords["a"] = "a"; setWords["A"] = "A";
 var text = "";
-var newText = "";
 var button = document.querySelector("#lawyerify");
 button.addEventListener("click", function(event) {
   text = tinyMCE.get("area").getContent({format: "text"});
-  newText = text;
   var wordRegex = /\b[a-z]+'?[a-z]*\b/gi; 
   var matches = text.match(wordRegex);
   matches.forEach(function(word,i) {
@@ -96,19 +96,23 @@ button.addEventListener("click", function(event) {
    synonyms.forEach(function(syn) {
      if (syn.length > longest.length) longest = syn;   
    });
+   if (setWords.hasOwnProperty(word)) longest = setWords[word]; //if the word is a prop of setWords, assign value from there.
    var upper = capitalize(word);
    var lower = decapitalize(word);
    var replaced = new RegExp(upper, "g");
-   newText = text.replace(replaced, capitalize(longest));
+   text = text.replace(replaced, capitalize(longest));
    replaced = new RegExp(lower, "g");
-   newText = text.replace(replaced, decapitalize(longest));
+   text = text.replace(replaced, decapitalize(longest));
    function capitalize(word) {
        return word.charAt(0).toUpperCase() + word.slice(1);
    }
    function decapitalize(word) {
        return word.charAt(0).toLowerCase() + word.slice(1);
    }
+   decideToChangeText();
+   function decideToChangeText() {
     if (last)
-        tinyMCE.get("area").setContent(newText, {format:"text"});
+        tinyMCE.get("area").setContent(text, {format:"text"});
+   }
   }
 </script>
