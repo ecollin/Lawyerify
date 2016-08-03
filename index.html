@@ -109,10 +109,8 @@ button.addEventListener("click", function(event) {
    function decapitalize(word) {
        return word.charAt(0).toLowerCase() + word.slice(1);
    }
-   decideToChangeText();
-   function decideToChangeText() {
     if (last)
         tinyMCE.get("area").setContent(text, {format:"text"});
-   }
+   
   }
 </script>
