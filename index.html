@@ -46,7 +46,9 @@
 </html>
 
 <script>
-var working = true; //when the number of daily allowed API calls is exceeded, this is false.
+var message = "Sorry! This site can only retrieve a certain number of synonyms per day due to the thesaurus used."
+  + " No more words can be lawyerified today. If you reload the page tomorrow it will probably work again" + 
+  + "(except if you come too late and the daily # of allowed calls is exceeded again)."; //shown after max API calls daily
 var setWords = {}; //common words the algorithm below shouldn't replace because it does a bad job.
 setWords["he"] = "he"; setWords["He"] = "He"; setWords["a"] = "a"; setWords["A"] = "A";
 var text = "";
@@ -62,13 +64,23 @@ button.addEventListener("click", function(event) {
     var req = new XMLHttpRequest();
     req.open("GET",url, true);
     req.addEventListener("load", function(event) {
-      if (req.status == 200)
+      if (req.status == 200) {
         if (i == matches.length - 1)
           process(JSON.parse(req.responseText), word, true);
         else
           process(JSON.parse(req.responseText), word, false);
-      else if (req.status == 404) return; //word not found, simply ignore it.
-      else if (req.status == 500) throw new Error("Number of synonym requests per day reached. No more words can be lawyerified.");
+      } else if (req.status == 404) { //word not found
+        if (i == matches.length - 1) {
+          tinyMCE.get("area").setContent(text, {format:"text"});
+          button.disabled = false;
+        }
+        return; 
+      } else if (req.status == 500) { //no more API calls allowed for the day
+          tinyMCE.get("area").setContent(text + "\n\n\n " + message, {format:"text"});
+          alert(message);
+          //note that lawyerify button will be disabled unless the page is reloaded. 
+          //Then another API call will be made, and if more are allowed the site will continue to work.
+     }
     });
     req.send();
   });
@@ -116,7 +128,9 @@ button.addEventListener("click", function(event) {
        return word.charAt(0).toLowerCase() + word.slice(1);
    }
     if (last) {
-        tinyMCE.get("area").setContent(text, {format:"text"});
+      tinyMCE.get("area").setContent(text, {format:"text"});
+      button.disabled = false;  
+    }
    
   }
 </script>
