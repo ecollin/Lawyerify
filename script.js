@@ -54,8 +54,8 @@ button.addEventListener("click", function(event) {
    }
    if (PoS.length > 1 && strictMode) {
      if (last) {
-        tinyMCE.get("area").setContent(text, {format:"text"});
-        button.disabled = false;
+       tinyMCE.get("area").setContent(text, {format:"text"});
+       button.disabled = false;
      }
      return; //don't do anything w/ more than one possible PoS in strict mode
    }
@@ -64,7 +64,7 @@ button.addEventListener("click", function(event) {
      var str = processPoS(pos);
      if (str.length > longest.length) longest = str;
    });
-   
+
    if (setWords.hasOwnProperty(word)) longest = setWords[word]; //if the word is a prop of setWords, assign value from there.
    var upper = capitalize(word);
    var lower = decapitalize(word);
