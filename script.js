@@ -5,6 +5,7 @@ var setWords = {}; //common words the algorithm below shouldn't replace because 
 setWords["he"] = "he"; setWords["He"] = "He"; setWords["a"] = "a"; setWords["A"] = "A";
 var text = "";
 var button = document.querySelector("#lawyerify");
+var strictMode = true; //Whether a word with multiple parts of speech should be replaced or not. True means it shouldn't.
 button.addEventListener("click", function(event) {
   button.disabled = true;
   text = tinyMCE.get("area").getContent({format: "text"});
@@ -39,33 +40,28 @@ button.addEventListener("click", function(event) {
 });
 //Note: because this is being called by the API (JSONP format), it needs to be global function.
   function process(result, word, last) {
-    var count = 0; //# of parts of speech possible for the word
-    var pos;  //Part of speech
+    var PoS = []; //contains each part of speech for the current word.
     for ( var prop in result) {
       if (prop == "noun") {
-        pos = "noun";
-        count++;
+        PoS.push("noun")
       } else if (prop == "verb") {
-        pos = "verb";
-        count++;
+        PoS.push("verb");
       } else if (prop == "adjective") {
-        pos = "adjective";
-        count++;
+        PoS.push("adjective");
        } else if (prop == "adverb") {
-        pos = "adverb";
-        count++;
+        PoS.push("adverb");
        }
    }
-   if (count > 1) {
+   if (PoS.length > 1 && strictMode) {
      if (last)
         tinyMCE.get("area").setContent(text, {format:"text"});
-     return; //don't do anything w/ more than one possible PoS
+     return; //don't do anything w/ more than one possible PoS in strict mode
    }
-   var synonyms = result[pos]["syn"]; //this is an array of synonyms.
-   var longest = word;
-   synonyms.forEach(function(syn) {
-     if (syn.length > longest.length) longest = syn;   
+   PoS.forEach(function(pos) {
+     var str = processPoS(pos);
+     if (str.length > longest.length) longest = str;
    });
+   
    if (setWords.hasOwnProperty(word)) longest = setWords[word]; //if the word is a prop of setWords, assign value from there.
    var upper = capitalize(word);
    var lower = decapitalize(word);
@@ -73,6 +69,15 @@ button.addEventListener("click", function(event) {
    text = text.replace(replaced, capitalize(longest));
    replaced = new RegExp(lower, "g");
    text = text.replace(replaced, decapitalize(longest));
+   
+  function processPoS(pos) { //processes synonyms for one part of speech. Returns longest
+    var synonyms = result[pos]["syn"]; //this is an array of synonyms.
+    var mostCharacters = word; //access word from outside scope
+    synonyms.forEach(function(syn) {
+      if (syn.length > longest.length) mostCharacters = syn;   
+    });
+    return mostCharacters;
+  }
    function capitalize(word) {
        return word.charAt(0).toUpperCase() + word.slice(1);
    }
@@ -84,3 +89,13 @@ button.addEventListener("click", function(event) {
       button.disabled = false;  
     }
   }
+  
+  var checkbox = document.querySelector("#strictMode"); 
+  checkbox.title = "If this box is not checked, when you click lawyerify and a word is encountered that can be more than one "  
+    + "part of speech, the longest synonym will replace it anyway. Otherwise, it will not be replaced at all." 
+    + " For example, the word date is a noun that refers to a food and also a verb that refers to dating someone."
+    + " With strict mode, it won't be replaced. Without strict mode, it might be replaced by a word synonymous with either meaning.";
+  checkbox.addEventListener("change", function(event) {
+    strictMode = checkbox.checked;
+  });
+  
