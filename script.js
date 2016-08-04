@@ -1,0 +1,86 @@
+var message = "Sorry! This site can only retrieve a certain number of synonyms per day due to the thesaurus used."
+  + " No more words can be lawyerified today. If you reload the page tomorrow it will probably work again" + 
+  + "(except if you come too late and the daily # of allowed calls is exceeded again)."; //shown after max API calls daily
+var setWords = {}; //common words the algorithm below shouldn't replace because it does a bad job.
+setWords["he"] = "he"; setWords["He"] = "He"; setWords["a"] = "a"; setWords["A"] = "A";
+var text = "";
+var button = document.querySelector("#lawyerify");
+button.addEventListener("click", function(event) {
+  button.disabled = true;
+  text = tinyMCE.get("area").getContent({format: "text"});
+  var wordRegex = /\b[a-z]+'?[a-z]*\b/gi; 
+  var matches = text.match(wordRegex);
+  matches.forEach(function(word,i) {
+    if (word.includes("\'")) return;
+    var url = "https://words.bighugelabs.com/api/2/d114c68208c8b398bc59a8963d564320/" + word + "/json";
+    var req = new XMLHttpRequest();
+    req.open("GET",url, true);
+    req.addEventListener("load", function(event) {
+      if (req.status == 200) {
+        if (i == matches.length - 1)
+          process(JSON.parse(req.responseText), word, true);
+        else
+          process(JSON.parse(req.responseText), word, false);
+      } else if (req.status == 404) { //word not found
+        if (i == matches.length - 1) {
+          tinyMCE.get("area").setContent(text, {format:"text"});
+          button.disabled = false;
+        }
+        return; 
+      } else if (req.status == 500) { //no more API calls allowed for the day
+          tinyMCE.get("area").setContent(text + "\n\n\n " + message, {format:"text"});
+          alert(message);
+          //note that lawyerify button will be disabled unless the page is reloaded. 
+          //Then another API call will be made, and if more are allowed the site will continue to work.
+     }
+    });
+    req.send();
+  });
+});
+//Note: because this is being called by the API (JSONP format), it needs to be global function.
+  function process(result, word, last) {
+    var count = 0; //# of parts of speech possible for the word
+    var pos;  //Part of speech
+    for ( var prop in result) {
+      if (prop == "noun") {
+        pos = "noun";
+        count++;
+      } else if (prop == "verb") {
+        pos = "verb";
+        count++;
+      } else if (prop == "adjective") {
+        pos = "adjective";
+        count++;
+       } else if (prop == "adverb") {
+        pos = "adverb";
+        count++;
+       }
+   }
+   if (count > 1) {
+     if (last)
+        tinyMCE.get("area").setContent(text, {format:"text"});
+     return; //don't do anything w/ more than one possible PoS
+   }
+   var synonyms = result[pos]["syn"]; //this is an array of synonyms.
+   var longest = word;
+   synonyms.forEach(function(syn) {
+     if (syn.length > longest.length) longest = syn;   
+   });
+   if (setWords.hasOwnProperty(word)) longest = setWords[word]; //if the word is a prop of setWords, assign value from there.
+   var upper = capitalize(word);
+   var lower = decapitalize(word);
+   var replaced = new RegExp(upper, "g");
+   text = text.replace(replaced, capitalize(longest));
+   replaced = new RegExp(lower, "g");
+   text = text.replace(replaced, decapitalize(longest));
+   function capitalize(word) {
+       return word.charAt(0).toUpperCase() + word.slice(1);
+   }
+   function decapitalize(word) {
+       return word.charAt(0).toLowerCase() + word.slice(1);
+   }
+    if (last) {
+      tinyMCE.get("area").setContent(text, {format:"text"});
+      button.disabled = false;  
+    }
+  }
