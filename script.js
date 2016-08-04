@@ -48,15 +48,18 @@ button.addEventListener("click", function(event) {
         PoS.push("verb");
       } else if (prop == "adjective") {
         PoS.push("adjective");
-       } else if (prop == "adverb") {
+      } else if (prop == "adverb") {
         PoS.push("adverb");
-       }
+      }
    }
    if (PoS.length > 1 && strictMode) {
-     if (last)
+     if (last) {
         tinyMCE.get("area").setContent(text, {format:"text"});
+        button.disabled = false;
+     }
      return; //don't do anything w/ more than one possible PoS in strict mode
    }
+   var longest = word;
    PoS.forEach(function(pos) {
      var str = processPoS(pos);
      if (str.length > longest.length) longest = str;
@@ -74,7 +77,7 @@ button.addEventListener("click", function(event) {
     var synonyms = result[pos]["syn"]; //this is an array of synonyms.
     var mostCharacters = word; //access word from outside scope
     synonyms.forEach(function(syn) {
-      if (syn.length > longest.length) mostCharacters = syn;   
+      if (syn.length > mostCharacters.length) mostCharacters = syn;   
     });
     return mostCharacters;
   }
