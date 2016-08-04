@@ -46,11 +46,13 @@
 </html>
 
 <script>
+var working = true; //when the number of daily allowed API calls is exceeded, this is false.
 var setWords = {}; //common words the algorithm below shouldn't replace because it does a bad job.
 setWords["he"] = "he"; setWords["He"] = "He"; setWords["a"] = "a"; setWords["A"] = "A";
 var text = "";
 var button = document.querySelector("#lawyerify");
 button.addEventListener("click", function(event) {
+  button.disabled = true;
   text = tinyMCE.get("area").getContent({format: "text"});
   var wordRegex = /\b[a-z]+'?[a-z]*\b/gi; 
   var matches = text.match(wordRegex);
@@ -113,7 +115,7 @@ button.addEventListener("click", function(event) {
    function decapitalize(word) {
        return word.charAt(0).toLowerCase() + word.slice(1);
    }
-    if (last)
+    if (last) {
         tinyMCE.get("area").setContent(text, {format:"text"});
    
   }
