@@ -1,3 +1,4 @@
+//CURRENT PROBLEM: If the last word returns befoer other words text will change and other words won't have been lawyerified yet.
 var message = "Sorry! This site can only retrieve a certain number of synonyms per day due to the thesaurus used."
   + " No more words can be lawyerified today. If you reload the page tomorrow it will probably work again" + 
   + "(except if you come too late and the daily # of allowed calls is exceeded again)."; //shown after max API calls daily
