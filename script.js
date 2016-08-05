@@ -4,12 +4,14 @@ var message = "Sorry! This site can only retrieve a certain number of synonyms p
 var setWords = {}; //common words the algorithm below shouldn't replace because it does a bad job.
 setWords["he"] = "he"; setWords["He"] = "He"; setWords["a"] = "a"; setWords["A"] = "A"; setWords["is"] = "is"; setWords["Is"] = "Is"; setWords["s"] = "s"; setWords["S"] = "S";
 var text = "";
+var oldText;
 var button = document.querySelector("#lawyerify");
 var strictMode = true; //Whether a word with multiple parts of speech should be replaced or not. True means it shouldn't.
 var wordsLeft = 0; //tracks the # of words that should be processed before the text in the textArea is changed.
 button.addEventListener("click", function(event) {
   button.disabled = true;
   text = tinyMCE.get("area").getContent({format: "text"});
+  oldText = text;
   var wordRegex = /\b[a-z]+'?[a-z]*\b/gi; 
   var matches = text.match(wordRegex);
   wordsLeft = matches.length;
@@ -27,12 +29,12 @@ button.addEventListener("click", function(event) {
       } else if (req.status == 404) { //word not found
         wordsLeft--;
         if (wordsLeft == 0) {
-          tinyMCE.get("area").setContent(text, {format:"text"});
+          tinyMCE.get("area").setContent(text + "\n\n\nOLD TEXT: " + oldText, {format:"text"});
           button.disabled = false;
         }
         return; 
       } else if (req.status == 500) { //no more API calls allowed for the day
-          tinyMCE.get("area").setContent(text + "\n\n\n " + message, {format:"text"});
+          tinyMCE.get("area").setContent(text + "\n\n\nOLD TEXT: " + oldText + "\n\n\n " + message, {format:"text"});
           alert(message);
           //note that lawyerify button will be disabled unless the page is reloaded. 
           //Then another API call will be made, and if more are allowed the site will continue to work.
@@ -58,7 +60,7 @@ button.addEventListener("click", function(event) {
    if (PoS.length > 1 && strictMode) {
      wordsLeft--;
      if (wordsLeft == 0) {
-       tinyMCE.get("area").setContent(text, {format:"text"});
+       tinyMCE.get("area").setContent(text + "\n\n\nOLD TEXT: " + oldText, {format:"text"});
        button.disabled = false;
      }
      return; //don't do anything w/ more than one possible PoS in strict mode
@@ -81,7 +83,7 @@ button.addEventListener("click", function(event) {
    //Sad was changed to despondent even though not listed as a synonym. This is so incredibly rare that it hasn't been fixed.
    wordsLeft--;
    if (wordsLeft == 0) {
-      tinyMCE.get("area").setContent(text, {format:"text"});
+      tinyMCE.get("area").setContent(text + "\n\n\nOLD TEXT: " + oldText, {format:"text"});
       button.disabled = false;  
     }
   function processPoS(pos) { //processes synonyms for one part of speech. Returns longest
