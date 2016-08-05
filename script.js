@@ -2,7 +2,7 @@ var message = "Sorry! This site can only retrieve a certain number of synonyms p
   + " No more words can be lawyerified today. If you reload the page tomorrow it will probably work again" + 
   + "(except if you come too late and the daily # of allowed calls is exceeded again)."; //shown after max API calls daily
 var setWords = {}; //common words the algorithm below shouldn't replace because it does a bad job.
-setWords["he"] = "he"; setWords["He"] = "He"; setWords["a"] = "a"; setWords["A"] = "A"; setWords["is"] = "is"; setWords["Is"] = "Is";
+setWords["he"] = "he"; setWords["He"] = "He"; setWords["a"] = "a"; setWords["A"] = "A"; setWords["is"] = "is"; setWords["Is"] = "Is"; setWords["s"] = "s"; setWords["S"] = "S";
 var text = "";
 var button = document.querySelector("#lawyerify");
 var strictMode = true; //Whether a word with multiple parts of speech should be replaced or not. True means it shouldn't.
