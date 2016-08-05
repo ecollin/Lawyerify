@@ -13,7 +13,7 @@ button.addEventListener("click", function(event) {
   var wordRegex = /\b[a-z]+'?[a-z]*\b/gi; 
   var matches = text.match(wordRegex);
   wordsLeft = matches.length;
-  matches.forEach(function(word,i) {
+  matches.forEach(function(word) {
     if (word.includes("\'")) {
       wordsLeft--;
       return;
@@ -74,7 +74,7 @@ button.addEventListener("click", function(event) {
    var lower = decapitalize(word);
    var replaced = new RegExp("\\b" + upper + "\\b", "g");
    text = text.replace(replaced, capitalize(longest));
-   replaced = new RegExp("\\b" + lower + ""\\b", "g");
+   replaced = new RegExp("\\b" + lower + "\\b", "g");
    text = text.replace(replaced, decapitalize(longest));
    
    wordsLeft--;
