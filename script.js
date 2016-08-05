@@ -76,7 +76,9 @@ button.addEventListener("click", function(event) {
    text = text.replace(replaced, capitalize(longest));
    replaced = new RegExp("\\b" + lower + "\\b", "g");
    text = text.replace(replaced, decapitalize(longest));
-   
+   //Consider: original text has sad and unhappy in it. Sad's longest synonym is unhappy. 
+   //Unhappy's is despondent. So, sad is replaced by unhappy. All unhappies are then replaced by despondent
+   //Sad was changed to despondent even though not listed as a synonym. This is so incredibly rare that it hasn't been fixed.
    wordsLeft--;
    if (wordsLeft == 0) {
       tinyMCE.get("area").setContent(text, {format:"text"});
