@@ -76,13 +76,6 @@ button.addEventListener("click", function(event) {
    text = text.replace(replaced, capitalize(longest));
    replaced = new RegExp("\\b" + lower + ""\\b", "g");
    text = text.replace(replaced, decapitalize(longest));
-   //Note that if one word is replaced by a synonym that was elsewhere in the text
-   //and that word is also being lawyerified, an error may occur where after the first word is lawyerified
-   //it is lawyerified again. Ex: Say the words sad and unhappy appear in the original text
-   //sad's longest synonym is unhappy but unhappy's longest synonym is despondent. 
-   //Sad may replaced by unhappy and then that may replaced by despondent. 
-   //This happening is so incredibly rare (note also that for some reason sad's longest synonym couldn't be despondent for the error)
-   //that I do not mind it appearing in the code of this insignificant program.
    
    wordsLeft--;
    if (wordsLeft == 0) {
