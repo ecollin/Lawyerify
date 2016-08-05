@@ -13,9 +13,6 @@
         remove_linebreaks : false,
         //the following adds two em spaces when tab is pressed and prevents default (effectively indents).
         setup: function(ed) {
-          editor.on('PostProcess', function(ed) { //makes \n work. <p> becomes <br>
-            ed.content = ed.content.replace(/(<p>&nbsp;<\/p>)/gi,'<br />');
-           });
           ed.on('keydown', function(event) {
             if (event.keyCode == 9) { // tab pressed
               ed.execCommand('mceInsertContent', false, '&emsp;&emsp;');
