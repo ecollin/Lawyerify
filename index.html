@@ -6,16 +6,12 @@
       tinymce.init({ 
         selector:"textarea",
         height: 350,
+        statusbar: false,
         toolbar: "undo redo | styleselect | alignleft aligncenter alignright alignjustify ",
         oninit : "setPlainText",
         plugins : "paste",
         //the following adds two em spaces when tab is pressed and prevents default (effectively indents).
         setup: function(ed) {
-          ed.onBeforeSetContent.add(function(ed, o) { //this means \n = newline
-            if (o.initial) {
-              o.content = o.content.replace(/\r?\n/g, '<br />');
-            }
-          
           ed.on('keydown', function(event) {
             if (event.keyCode == 9) { // tab pressed
               ed.execCommand('mceInsertContent', false, '&emsp;&emsp;');
