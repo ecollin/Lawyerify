@@ -8,6 +8,7 @@ var oldText;
 var button = document.querySelector("#lawyerify");
 var strictMode = true; //Whether a word with multiple parts of speech should be replaced or not. True means it shouldn't.
 var wordsLeft = 0; //tracks the # of words that should be processed before the text in the textArea is changed.
+var spaces = true; //determines whether multi-word synonyms are allowed
 button.addEventListener("click", function(event) {
   button.disabled = true;
   text = tinyMCE.get("area").getContent({format: "text"});
@@ -90,6 +91,7 @@ button.addEventListener("click", function(event) {
     var synonyms = result[pos]["syn"]; //this is an array of synonyms.
     var mostCharacters = word; //access word from outside scope
     synonyms.forEach(function(syn) {
+      if (syn.includes(" ") && spaces == false) return; 
       if (syn.length > mostCharacters.length) mostCharacters = syn;   
     });
     return mostCharacters;
@@ -102,12 +104,17 @@ button.addEventListener("click", function(event) {
    }
   }
   
-  var checkbox = document.querySelector("#strictMode"); 
-  checkbox.title = "If this box is not checked, when you click lawyerify and a word is encountered that can be more than one "  
+  var strictModeCheckbox = document.querySelector("#strictMode"); 
+  strictModeCheckbox.title = "If this box is not checked, when you click lawyerify and a word is encountered that can be more than one "  
     + "part of speech, the longest synonym will replace it anyway. Otherwise, it will not be replaced at all." 
     + " For example, the word date is a noun that refers to a food and also a verb that refers to dating someone."
     + " With strict mode, it won't be replaced. Without strict mode, it might be replaced by a word synonymous with either meaning.";
-  checkbox.addEventListener("change", function(event) {
-    strictMode = checkbox.checked;
+  strictModeCheckbox.addEventListener("change", function(event) {
+    strictMode = strictModeCheckbox.checked;
+  });
+  
+  var spacesCheckbox = document.querySelector("#spaces");
+  spacesCheckbox.addEventListener("change", function(event) {
+    spaces = spacesCheckbox.checked;
   });
   
