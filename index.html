@@ -10,6 +10,9 @@
         toolbar: "undo redo | styleselect | alignleft aligncenter alignright alignjustify ",
         oninit : "setPlainText",
         plugins : "paste",
+        force_br_newlines : true,
+        force_p_newlines : false,
+        forced_root_block : '', 
         //the following adds two em spaces when tab is pressed and prevents default (effectively indents).
         setup: function(ed) {
           ed.on('keydown', function(event) {
