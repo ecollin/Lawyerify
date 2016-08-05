@@ -1,4 +1,3 @@
-//CURRENT PROBLEM: If the last word returns befoer other words text will change and other words won't have been lawyerified yet.
 var message = "Sorry! This site can only retrieve a certain number of synonyms per day due to the thesaurus used."
   + " No more words can be lawyerified today. If you reload the page tomorrow it will probably work again" + 
   + "(except if you come too late and the daily # of allowed calls is exceeded again)."; //shown after max API calls daily
@@ -7,24 +6,27 @@ setWords["he"] = "he"; setWords["He"] = "He"; setWords["a"] = "a"; setWords["A"]
 var text = "";
 var button = document.querySelector("#lawyerify");
 var strictMode = true; //Whether a word with multiple parts of speech should be replaced or not. True means it shouldn't.
+var wordsLeft = 0; //tracks the # of words that should be processed before the text in the textArea is changed.
 button.addEventListener("click", function(event) {
   button.disabled = true;
   text = tinyMCE.get("area").getContent({format: "text"});
   var wordRegex = /\b[a-z]+'?[a-z]*\b/gi; 
   var matches = text.match(wordRegex);
+  wordsLeft = matches.length;
   matches.forEach(function(word,i) {
-    if (word.includes("\'")) return;
+    if (word.includes("\'")) {
+      wordsLeft--;
+      return;
+    }
     var url = "https://words.bighugelabs.com/api/2/d114c68208c8b398bc59a8963d564320/" + word + "/json";
     var req = new XMLHttpRequest();
     req.open("GET",url, true);
     req.addEventListener("load", function(event) {
       if (req.status == 200) {
-        if (i == matches.length - 1)
-          process(JSON.parse(req.responseText), word, true);
-        else
-          process(JSON.parse(req.responseText), word, false);
+          process(JSON.parse(req.responseText), word);
       } else if (req.status == 404) { //word not found
-        if (i == matches.length - 1) {
+        wordsLeft--;
+        if (wordsLeft == 0) {
           tinyMCE.get("area").setContent(text, {format:"text"});
           button.disabled = false;
         }
@@ -40,7 +42,7 @@ button.addEventListener("click", function(event) {
   });
 });
 //Note: because this is being called by the API (JSONP format), it needs to be global function.
-  function process(result, word, last) {
+  function process(result, word) {
     var PoS = []; //contains each part of speech for the current word.
     for ( var prop in result) {
       if (prop == "noun") {
@@ -54,7 +56,8 @@ button.addEventListener("click", function(event) {
       }
    }
    if (PoS.length > 1 && strictMode) {
-     if (last) {
+     wordsLeft--;
+     if (wordsLeft == 0) {
        tinyMCE.get("area").setContent(text, {format:"text"});
        button.disabled = false;
      }
@@ -69,11 +72,23 @@ button.addEventListener("click", function(event) {
    if (setWords.hasOwnProperty(word)) longest = setWords[word]; //if the word is a prop of setWords, assign value from there.
    var upper = capitalize(word);
    var lower = decapitalize(word);
-   var replaced = new RegExp(upper, "g");
+   var replaced = new RegExp("\\b" + upper + "\\b", "g");
    text = text.replace(replaced, capitalize(longest));
-   replaced = new RegExp(lower, "g");
+   replaced = new RegExp("\\b" + lower + ""\\b", "g");
    text = text.replace(replaced, decapitalize(longest));
+   //Note that if one word is replaced by a synonym that was elsewhere in the text
+   //and that word is also being lawyerified, an error may occur where after the first word is lawyerified
+   //it is lawyerified again. Ex: Say the words sad and unhappy appear in the original text
+   //sad's longest synonym is unhappy but unhappy's longest synonym is despondent. 
+   //Sad may replaced by unhappy and then that may replaced by despondent. 
+   //This happening is so incredibly rare (note also that for some reason sad's longest synonym couldn't be despondent for the error)
+   //that I do not mind it appearing in the code of this insignificant program.
    
+   wordsLeft--;
+   if (wordsLeft == 0) {
+      tinyMCE.get("area").setContent(text, {format:"text"});
+      button.disabled = false;  
+    }
   function processPoS(pos) { //processes synonyms for one part of speech. Returns longest
     var synonyms = result[pos]["syn"]; //this is an array of synonyms.
     var mostCharacters = word; //access word from outside scope
@@ -88,10 +103,6 @@ button.addEventListener("click", function(event) {
    function decapitalize(word) {
        return word.charAt(0).toLowerCase() + word.slice(1);
    }
-    if (last) {
-      tinyMCE.get("area").setContent(text, {format:"text"});
-      button.disabled = false;  
-    }
   }
   
   var checkbox = document.querySelector("#strictMode"); 
