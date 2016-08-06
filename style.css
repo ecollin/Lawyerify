@@ -7,9 +7,15 @@ header {
   height:120px;
   border: 1px solid black;
   margin:0px;
+
 }
-header p, header h1 {
-  margin: 0px;
+
+#titles {
+  margin: 0px 0px 0px 10px;
+}
+
+#link {
+  float: right;
 }
 
 #main {
@@ -17,4 +23,16 @@ header p, header h1 {
   height: 450px;
   width:76%;
   margin:0 12%;
+}
+
+header nav ul {
+  text-align:right;
+  padding-right: 50px;
+}
+
+header nav ul li {
+  list-style-type: none;
+  display:inline;
+  padding-right:20px;
+  font-size:17px
 }
