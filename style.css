@@ -3,23 +3,18 @@ body {
 }
 header {
   display:block; 
-  width:100%;
+  width:99%;
   height:120px;
   border: 1px solid black;
+  margin:0px;
 }
-header {
+header p, header h1 {
   margin: 0px;
-  padding-left: 10px;
-}
-header a {
-  text-align: right;
-  padding-left:0px;
-  padding-right:10px;
 }
 
 #main {
   border: 1px solid black;
-  height: 445px;
+  height: 450px;
   width:76%;
   margin:0 12%;
 }
