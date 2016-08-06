@@ -12,7 +12,7 @@
         plugins : "paste",
         remove_linebreaks : false,
         //the following adds two em spaces when tab is pressed and prevents default (effectively indents).
-        setup: function(ed) {
+        setup: function(ed) { //this makes \n work when you set content
           ed.on('BeforeSetcontent', function(contentEvent) {
             contentEvent.content = contentEvent.content.replace(/\r?\n/g, '<br />');
           });
