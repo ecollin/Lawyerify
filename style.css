@@ -7,8 +7,14 @@ header {
   height:120px;
   border: 1px solid black;
 }
-header p, header h1 {
+header {
   margin: 0px;
+  padding-left: 10px;
+}
+header a {
+  text-align: right;
+  padding-left:0px;
+  padding-right:10px;
 }
 
 #main {
