@@ -13,10 +13,8 @@
         remove_linebreaks : false,
         //the following adds two em spaces when tab is pressed and prevents default (effectively indents).
         setup: function(ed) {
-          ed.onBeforeSetContent.add(function(ed, o) {
-            if (o.initial) {
-              o.content = o.content.replace(/\r?\n/g, '<br />');
-            }
+          ed.on('BeforeSetcontent', function(contentEvent) {
+            contentEvent.content = contentEvent.content.replace(/\r?\n/g, '<br />');
           });
           ed.on('keydown', function(event) {
             if (event.keyCode == 9) { // tab pressed
