@@ -19,6 +19,10 @@ button.addEventListener("click", function(event) {
   matches.forEach(function(word) {
     if (word.includes("\'")) {
       wordsLeft--;
+      if (wordsLeft == 0) {
+          tinyMCE.get("area").setContent(text + "\n\n\nOLD TEXT: " + oldText, {format:"text"});
+          button.disabled = false;
+      }
       return;
     }
     var url = "https://words.bighugelabs.com/api/2/d114c68208c8b398bc59a8963d564320/" + word + "/json";
