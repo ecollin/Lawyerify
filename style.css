@@ -1,19 +1,46 @@
 body {
   margin:0px;
+  background-image: url("man in suit.jpg");
+  background-repeat: no-repeat;
 }
 header {
-  display:block; 
-  width:100%;
+  width:99.8%;
   height:120px;
   border: 1px solid black;
+  margin:0px;
 }
-header p, header h1 {
-  margin: 0px;
+
+header h1, header p {
+  position-right: 10px;
+  margin:0px;
+  color:white;
 }
-  		  
+
 #main {
   border: 1px solid black;
-  height: 500px;
+  height: 450px;
   width:76%;
   margin:0 12%;
+  background:black;
+  color:white;
+}
+
+header nav ul {
+  text-align:right;
+  position:relative;
+  right: 140px;
+  bottom: 30px;
+}
+
+header nav ul li {
+  list-style-type: none;
+  display:inline;
+  margin-left: 20px;
+}
+
+header nav a {
+  text-decoration: none;
+  color:   #cc6666
+
+
 }
