@@ -93,7 +93,7 @@ button.addEventListener("click", function(event) {
     }
   function processPoS(pos) { //processes synonyms for one part of speech. Returns longest
     var synonyms = result[pos]["syn"]; //this is an array of synonyms.
-    if (synoynms == undefined) synonyms = result[pos]["sim"]; //API inconsistent. Some objs "sim" others "syn" prop.
+    if (synonyms == undefined) synonyms = result[pos]["sim"]; //API inconsistent. Some objs "sim" others "syn" prop.
     var mostCharacters = word; //access word from outside scope
     synonyms.forEach(function(syn) {
       if (syn.includes(" ") && spaces == false) return; 
