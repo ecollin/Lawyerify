@@ -2,9 +2,14 @@ var message = "Sorry! This site can only retrieve a certain number of synonyms p
   + " No more words can be lawyerified today. If you reload the page tomorrow it will probably work again" + 
   + "(except if you come too late and the daily # of allowed calls is exceeded again)."; //shown after max API calls daily
 var setWords = {}; //common words the algorithm below shouldn't replace because it does a bad job.
-function setWord(word) {
-  setWords[capitalize(word)] = capitalize(word);
-  setWords[decapitalize(word)] = decapitalize(word);
+function setWord(word, syn) {
+  if (syn == undefined) {
+    setWords[capitalize(word)] = capitalize(word);
+    setWords[decapitalize(word)] = decapitalize(word);
+  } else {
+    setWords[capitalize(word)] = capitalize(syn);
+    setWords[decapitalize(word)] = decapitalize(syn);
+  }
 }
 function capitalize(word) {
   return word.charAt(0).toUpperCase() + word.slice(1);
@@ -12,7 +17,7 @@ function capitalize(word) {
 function decapitalize(word) {
   return word.charAt(0).toLowerCase() + word.slice(1);
 }
-setWord("he"); setWord("a"); setWord("is"); setWord("s"); setWord("was"); setWord("an"); setWord("it");
+setWord("he"); setWord("a"); setWord("is"); setWord("s"); setWord("was"); setWord("an"); setWord("it"); setWord("are");
 
 var text = "";
 var oldText;
