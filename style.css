@@ -16,7 +16,7 @@ header h1, header p {
   color:white;
 }
 
-#main {
+main {
   border: 1px solid black;
   height: 450px;
   width:76%;
