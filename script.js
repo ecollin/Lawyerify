@@ -17,7 +17,7 @@ function capitalize(word) {
 function decapitalize(word) {
   return word.charAt(0).toLowerCase() + word.slice(1);
 }
-setWord("he"); setWord("a"); setWord("is"); setWord("s"); setWord("was"); setWord("an"); setWord("it"); setWord("are");
+setWord("he"); setWord("a"); setWord("is"); setWord("s"); setWord("was"); setWord("an"); setWord("it"); setWord("are"); setWord("his"); setWord("at");
 
 var text = "";
 var oldText;
