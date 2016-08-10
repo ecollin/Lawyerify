@@ -17,7 +17,7 @@ function capitalize(word) {
 function decapitalize(word) {
   return word.charAt(0).toLowerCase() + word.slice(1);
 }
-setWord("he"); setWord("a"); setWord("is"); setWord("s"); setWord("was"); setWord("an"); setWord("it"); setWord("are"); setWord("his"); setWord("at"); setWord("or"); setWord("by"); setWord("but"); setWord("other"); setWord("said", "vocalized"); setWord("thing"); setWord("many", "numerous");
+setWord("he"); setWord("a"); setWord("is"); setWord("s"); setWord("was"); setWord("an"); setWord("it"); setWord("are"); setWord("his"); setWord("at"); setWord("or"); setWord("by"); setWord("but"); setWord("other"); setWord("said", "vocalized"); setWord("thing"); setWord("many", "numerous"); setWord("who"); setWord("has"); setWord("day");  setWord("may"); setWord("any"); setWord("new", "state-of-the-art");
 
 var text = "";
 var oldText;
