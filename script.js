@@ -45,6 +45,7 @@ button.addEventListener("click", function(event) {
     var req = new XMLHttpRequest();
     req.open("GET",url, true);
     req.addEventListener("error", function(event) {
+      console.log('fml');
       req.abort();
       wordsLeft--;
       if (wordsLeft == 0) {
