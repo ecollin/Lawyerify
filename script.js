@@ -44,7 +44,14 @@ button.addEventListener("click", function(event) {
     var url = "https://words.bighugelabs.com/api/2/d114c68208c8b398bc59a8963d564320/" + word + "/json";
     var req = new XMLHttpRequest();
     req.open("GET",url, true);
-    /*
+    req.addEventListener("error", function(event) {
+      req.abort();
+      wordsLeft--;
+      if (wordsLeft == 0) {
+        tinyMCE.get("area").setContent(text + "\n\n\nOLD TEXT: " + oldText, {format:"text"});
+        button.disabled = false;
+      }
+    });
     req.addEventListener("load", function(event) {
       console.log('used for testing');
       if (req.status == 200) {
@@ -63,8 +70,8 @@ button.addEventListener("click", function(event) {
           //Then another API call will be made, and if more are allowed the site will continue to work.
      }
     });
-    */
-    req.onreadystatechange = function() {
+    
+/*    req.onreadystatechange = function() {
       console.log('ok now im here');
       if (req.readyState == 4) {
         if (req.status == 200) {
@@ -83,9 +90,9 @@ button.addEventListener("click", function(event) {
           //Then another API call will be made, and if more are allowed the site will continue to work.
         }
       }
-    };
+    }; */
     req.send();
-  });
+  }); 
 });
 //Note: because this is being called by the API (JSONP format), it needs to be global function.
   function process(result, word) {
