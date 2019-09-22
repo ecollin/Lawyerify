@@ -44,11 +44,7 @@ button.addEventListener("click", function(event) {
     var url = "https://words.bighugelabs.com/api/2/d114c68208c8b398bc59a8963d564320/" + word + "/json";
     var req = new XMLHttpRequest();
     req.open("GET",url, true);
-    console.log('1');
-    req.addEventListener("error", function(e) {
-      console.log("we out here");
-    });
-    console.log('2');
+    /*
     req.addEventListener("load", function(event) {
       console.log('used for testing');
       if (req.status == 200) {
@@ -67,6 +63,27 @@ button.addEventListener("click", function(event) {
           //Then another API call will be made, and if more are allowed the site will continue to work.
      }
     });
+    */
+    req.onreadystatechange = function() {
+      console.log('ok now im here');
+      if (req.readyState == 4) {
+        if (req.status == 200) {
+            process(JSON.parse(req.responseText), word);
+        } else if (req.status == 404) { //word not found
+          wordsLeft--;
+          if (wordsLeft == 0) {
+            tinyMCE.get("area").setContent(text + "\n\n\nOLD TEXT: " + oldText, {format:"text"});
+            button.disabled = false;
+          }
+          return; 
+        } else if (req.status == 500) { //no more API calls allowed for the day
+            tinyMCE.get("area").setContent(text + "\n\n\nOLD TEXT: " + oldText + "\n\n\n " + message, {format:"text"});
+            alert(message);
+          //note that lawyerify button will be disabled unless the page is reloaded. 
+          //Then another API call will be made, and if more are allowed the site will continue to work.
+        }
+      }
+    };
     req.send();
   });
 });
