@@ -45,6 +45,7 @@ button.addEventListener("click", function(event) {
     var req = new XMLHttpRequest();
     req.open("GET",url, true);
     req.addEventListener("load", function(event) {
+      console.log('used for testing');
       if (req.status == 200) {
           process(JSON.parse(req.responseText), word);
       } else if (req.status == 404) { //word not found
