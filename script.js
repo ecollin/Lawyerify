@@ -44,9 +44,11 @@ button.addEventListener("click", function(event) {
     var url = "https://words.bighugelabs.com/api/2/d114c68208c8b398bc59a8963d564320/" + word + "/json";
     var req = new XMLHttpRequest();
     req.open("GET",url, true);
+    console.log('1');
     req.addEventListener("error", function(e) {
       console.log("we out here");
     });
+    console.log('2');
     req.addEventListener("load", function(event) {
       console.log('used for testing');
       if (req.status == 200) {
