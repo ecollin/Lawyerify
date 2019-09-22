@@ -100,6 +100,9 @@ button.addEventListener("click", function(event) {
             tinyMCE.get("area").setContent(text + "\n\n\nOLD TEXT: " + oldText, {format:"text"});
             button.disabled = false;
           }
+
+     console.log('thˆs od');
+      req.abort();
     }
   }); 
 });
