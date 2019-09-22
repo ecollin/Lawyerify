@@ -43,7 +43,7 @@ button.addEventListener("click", function(event) {
     }
     var url = "https://words.bighugelabs.com/api/2/d114c68208c8b398bc59a8963d564320/" + word + "/json";
     var req = new XMLHttpRequest();
-    req.open("GET",url, true);
+    req.open("GET",url, false);
     req.addEventListener("error", function(event) {
       console.log('fml');
       req.abort();
@@ -92,7 +92,15 @@ button.addEventListener("click", function(event) {
         }
       }
     }; */
+    try {
     req.send();
+    } catch (error) {
+          wordsLeft--;
+          if (wordsLeft == 0) {
+            tinyMCE.get("area").setContent(text + "\n\n\nOLD TEXT: " + oldText, {format:"text"});
+            button.disabled = false;
+          }
+    }
   }); 
 });
 //Note: because this is being called by the API (JSONP format), it needs to be global function.
