@@ -43,6 +43,16 @@ button.addEventListener("click", function(event) {
     }
     var url = "https://words.bighugelabs.com/api/2/d114c68208c8b398bc59a8963d564320/" + word + "/json";
     var req = new XMLHttpRequest();
+    // if an error occurs in the request, just move onto the next word.
+    // a common error is a 404 error here because the page requested doesn't exist
+    // this happens because some words just aren't in the thesaurus (like "my")
+    req.onerror(() => {
+      wordsLeft--;
+      if (wordsLeft == 0) {
+         tinyMCE.get("area").setContent(text + "\n\n\nOLD TEXT: " + oldText, {format:"text"});
+         button.disabled = false;
+      }
+    });
     req.open("GET",url, true);
     req.addEventListener("load", function(event) {
       console.log('used for testing');
