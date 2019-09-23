@@ -44,13 +44,14 @@ button.addEventListener("click", function(event) {
     var url = "https://words.bighugelabs.com/api/2/d114c68208c8b398bc59a8963d564320/" + word + "/json";
     var req = new XMLHttpRequest();
     req.open("GET",url, true);
+    // If an error occurs, move on to the next word. Frequently, CORS errors occur
+    // because the API throws one when a request is made to a word it has no synonyms for 
     req.addEventListener("error", function(event) {
       wordsLeft--;
       if (wordsLeft == 0) {
         tinyMCE.get("area").setContent(text + "\n\n\nOLD TEXT: " + oldText, {format:"text"});
         button.disabled = false;
       }
-//      event.stopPropagation();
     });
     req.addEventListener("load", function(event) {
       if (req.status == 200) {
