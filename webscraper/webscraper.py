@@ -11,6 +11,10 @@ from sys import exit
 Used to scrape thesaurus.com for synonyms of words parsed from a file and add them
 to the local thesaurus SQL database.
 """
+# words_to_scrape synonyms for
+words_to_scrape = 1
+# Wait time in seconds between scrapes
+wait_time = 10
 
 def scrape_syn_data(word, log_file='log.txt'):
     """
@@ -116,7 +120,8 @@ def get_words_to_scrape(file_path, num_words, delete=True, log_file='log.txt'):
 def add_syns_data_to_db(cursor, syns_data):
     """
     Takes a db cursor and a syns_data list and adds the list to the thesaurus database.
-    Assumes that the thesuarus used is "thesuarus.com".
+    Assumes that the thesuarus used is "thesuarus.com", and thus adds to the table 
+    syn_data_meaning.
 
     Parameters:
     cursor - db cursor where "USE thesuarus;" has been executed
@@ -143,9 +148,8 @@ def add_syns_data_to_db(cursor, syns_data):
         cursor.fetchone()
         if cursor.rowcount <= 0: 
             cursor.execute(f'INSERT INTO {table} ({column}) VALUES ({value});')
-        
+    print(syns_data)
     for meaning_dict in syns_data:
-        # TODO: Consider what to do if error occurs after adding the new meaning.
         pos = meaning_dict['pos']   
         word = meaning_dict['word']
         insert_if_not_exists('parts_of_speech', 'pos', pos)
@@ -164,6 +168,10 @@ def add_syns_data_to_db(cursor, syns_data):
 
         cursor.execute(f'SELECT meaning_id FROM meanings WHERE meaning="{meaning}"')
         meaning_id = cursor.fetchone()[0]
+        try:
+            cursor.execute(meaning_insert_str)
+        except mysql.errors.ProgrammingError as err:
+            raise RuntimeError(f'Error inserting meaning "{meaning}"') from err
 
         for synonym in meaning_dict['synonyms']:
             similarity = synonym['similarity']
@@ -174,21 +182,15 @@ def add_syns_data_to_db(cursor, syns_data):
             syn_insert_str = ('INSERT INTO syn_map_meaning '
                 '(meaning_id, syn_id, similarity_rating) '
                 f'VALUES ({meaning_id}, {syn_id}, {similarity});')
-            print(syn_insert_str)
 
             try:
                 cursor.execute(syn_insert_str)
             except mysql.errors.ProgrammingError as err:
-                print('About to insert: ', syn, word, pos, meaning, similarity)
-                # For now I just reraise and let cron mail alert me to it
-                raise err
-            #else:
-               # db.commit()
+                raise RuntimeError('Error inserting into synonym table') from err
 
 
 
-words_to_scrape = 1
-wait_time = 10
+
 # max_word_len is maximum num chars allowed by database for words/phrases
 max_word_len = 100
 log_file = 'log.txt'
@@ -234,7 +236,6 @@ cursor.execute('USE thesaurus;')
 for syns_data in syns_datas:
     add_syns_data_to_db(cursor, syns_data)
 
-#db.commit()
 cursor.close()
 db.close()
 
