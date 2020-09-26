@@ -148,7 +148,7 @@ def add_syns_data_to_db(cursor, syns_data):
         cursor.fetchone()
         if cursor.rowcount <= 0: 
             cursor.execute(f'INSERT INTO {table} ({column}) VALUES ({value});')
-    print(syns_data)
+
     for meaning_dict in syns_data:
         pos = meaning_dict['pos']   
         word = meaning_dict['word']
@@ -161,10 +161,9 @@ def add_syns_data_to_db(cursor, syns_data):
         word_id = cursor.fetchone()[0]
 
         meaning = meaning_dict['definition']
-        
+        print('inserting', pos, word, meaning)
         meaning_insert_str = ('INSERT INTO meanings (meaning, pos_id, word_id) '
             f'VALUES ("{meaning}", {pos_id}, {word_id});')
-        cursor.execute(meaning_insert_str)
 
         cursor.execute(f'SELECT meaning_id FROM meanings WHERE meaning="{meaning}"')
         meaning_id = cursor.fetchone()[0]
