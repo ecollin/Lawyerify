@@ -151,44 +151,26 @@ def add_syns_data_to_db(cursor, syns_data):
 
     for meaning_dict in syns_data:
         pos = meaning_dict['pos']   
-        word = meaning_dict['word']
-        insert_if_not_exists('parts_of_speech', 'pos', pos)
-        insert_if_not_exists('words', 'word', word)
-
-        cursor.execute(f'SELECT pos_id FROM parts_of_speech WHERE pos="{pos}"')
-        pos_id = cursor.fetchone()[0]
-        cursor.execute(f'SELECT word_id FROM words WHERE word="{word}"')
-        word_id = cursor.fetchone()[0]
-
+        primary_word = meaning_dict['word']
         meaning = meaning_dict['definition']
-        print('inserting', pos, word, meaning)
-        meaning_insert_str = ('INSERT INTO meanings (meaning, pos_id, word_id) '
-            f'VALUES ("{meaning}", {pos_id}, {word_id});')
-
-        cursor.execute(f'SELECT meaning_id FROM meanings WHERE meaning="{meaning}"')
-        meaning_id = cursor.fetchone()[0]
-        try:
-            cursor.execute(meaning_insert_str)
-        except mysql.errors.ProgrammingError as err:
-            raise RuntimeError(f'Error inserting meaning "{meaning}"') from err
-
+        insert_if_not_exists('parts_of_speech', 'pos', pos)
+        insert_if_not_exists('words', 'word', primary_word)
+        insert_if_not_exists('meanings', 'meaning', meaning)
+        
         for synonym in meaning_dict['synonyms']:
             similarity = synonym['similarity']
             syn = synonym['term']
             insert_if_not_exists('words', 'word', syn)
-            cursor.execute(f'SELECT word_id FROM words WHERE word="{syn}"')
-            syn_id = cursor.fetchone()[0]
             syn_insert_str = ('INSERT INTO syn_map_meaning '
-                '(meaning_id, syn_id, similarity_rating) '
-                f'VALUES ({meaning_id}, {syn_id}, {similarity});')
+                '(syn_word, primary_word, meaning, pos, similarity_rating) '
+                f'VALUES ("{syn}", "{primary_word}", "{meaning}", "{pos}", {similarity});')
 
             try:
                 cursor.execute(syn_insert_str)
             except mysql.errors.ProgrammingError as err:
-                raise RuntimeError('Error inserting into synonym table') from err
-
-
-
+                err_str = (f'Error inserting synonym "{syn}" for word "{primary_word}"'
+                    ' into syn_map_meaning table')
+                raise RuntimeError(err_str) from err
 
 # max_word_len is maximum num chars allowed by database for words/phrases
 max_word_len = 100
